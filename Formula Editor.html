@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Formula Editor</title>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+        
+        li {
+            display: inline-block;
+            list-style: none;
+            padding: 6px;
+            font-weight: bold;
+            font-size: 20pt;
+            border: 1px solid #999999;
+            cursor: pointer;
+        }
+        
+        img {
+            padding: 5px;
+            cursor: pointer;
+            border-color: red;
+            border-width: 1px;
+        }
+        
+        #Tabs img {
+            width: 47px;
+        }
+    </style>
+    <script src="FormulaEditor.js"></script>
+    <script language="JavaScript">
+        var PrevTab;
+
+        function Initiate() {
+            PrevTab = Functions;
+            MainTab();
+            XPGEdit.Create();
+        }
+
+        function MainTab() {
+            Main.style.background = "#eeeeee";
+            Main.style.cursor = "default";
+            PrevTab.style.background = "";
+            PrevTab.style.cursor = "pointer";
+            PrevTab = Main;
+            Tabs.innerHTML =
+                "<img src='Resources/SqRootBtn.jpg' onmouseover='Over()' onmouseout='Out()' onclick='SqRootBtnClick()' > \
+            <img src='Resources/DiviBtn.jpg' onmouseover='Over()' onmouseout='Out()' onclick='DiviBtnClick()'> \
+            <img src='Resources/EntBtn.jpg' onmouseover='Over()' onmouseout='Out()'> \
+            <img src='Resources/EscBtn.jpg' onmouseover='Over()' onmouseout='Out()'> \
+            <img src='Resources/ExitBtn.jpg' onmouseover='Over()' onmouseout='Out()'> \
+            <img src='Resources/F1Btn.jpg' onmouseover='Over()' onmouseout='Out()'> \
+            <img src='Resources/F2Btn.jpg' onmouseover='Over()' onmouseout='Out()'> \
+            <img src='Resources/FracBtn.jpg' onmouseover='Over()' onmouseout='Out()' onclick='FractionBtnClick()'> \
+            <img src='Resources/MinusBtn.jpg' onmouseover='Over()' onmouseout='Out()' onclick='MinusBtnClick()'> \
+            <img src='Resources/Mult2Btn.jpg' onmouseover='Over()' onmouseout='Out()' onclick='Mult2BtnClick()'> \
+            <img src='Resources/MultBtn.jpg' onmouseover='Over()' onmouseout='Out()' onclick='MultBtnClick()'> \
+            <img src='Resources/NewDataBtn.jpg' onmouseover='Over()' onmouseout='Out()'> \
+            <img src='Resources/PlusBtn.jpg' onmouseover='Over()' onmouseout='Out()' onclick='PlusBtnClick()'> \
+            <img src='Resources/RetryBtn.jpg' onmouseover='Over()' onmouseout='Out()'> "
+        }
+
+        function FuncTab() {
+            Functions.style.background = "#eeeeee";
+            Functions.style.cursor = "default";
+            PrevTab.style.background = "";
+            PrevTab.style.cursor = "pointer";
+            PrevTab = Functions;
+            Tabs.innerHTML =
+                "<img src='Resources/FracBtnGr.jpg' onmouseover='Over()' onmouseout='Out()' onclick='FractionBtnClick()'> \
+            <img src='Resources/ExpBtnGr.jpg' onmouseover='Over()' onmouseout='Out()'  onclick='ExpBtnClick()'> \
+            <img src='Resources/LgBtnGr.jpg' onmouseover='Over()' onclick='LgBtnClick()' onmouseout='Out()'> \
+            <img src='Resources/SinBtnGr.jpg' onmouseover='Over()' onmouseout='Out()'  onclick='SinBtnClick()'> \
+            <img src='Resources/TanBtnGr.jpg' onmouseover='Over()' onmouseout='Out()'  onclick='TanBtnClick()'> \
+            <img src='Resources/ArcSinBtnGr.jpg' onmouseover='Over()' onmouseout='Out()'  onclick='ArcSinBtnClick()'> \
+            <img src='Resources/ArcTanBtnGr.jpg' onmouseover='Over()' onmouseout='Out()'  onclick='ArcTanBtnClick()'> \
+            <img src='Resources/PowerBtnGr.jpg' onmouseover='Over()' onmouseout='Out()' onclick='PowrBtnClick()'> \
+            <img src='Resources/RootBtnGr.jpg' onmouseover='Over()' onmouseout='Out()' onclick='RootBtnClick()'> \
+            <img src='Resources/LnBtnGr.jpg' onmouseover='Over()' onmouseout='Out()' onclick='LnBtnClick()'> \
+            <img src='Resources/CosBtnGr.jpg' onmouseover='Over()' onmouseout='Out()'  onclick='CosBtnClick()'> \
+            <img src='Resources/CotBtnGr.jpg' onmouseover='Over()' onmouseout='Out()'  onclick='CotBtnClick()'> \
+            <img src='Resources/ArcCosBtnGr.jpg' onmouseover='Over()' onmouseout='Out()'  onclick='ArcCosBtnClick()'> \
+            <img src='Resources/ArcCotBtnGr.jpg' onmouseover='Over()' onmouseout='Out()'  onclick='ArcCotBtnClick()'> "
+        }
+
+        function MathTab() {
+            Maths.style.background = "#eeeeee";
+            Maths.style.cursor = "default";
+            PrevTab.style.background = "";
+            PrevTab.style.cursor = "pointer";
+            PrevTab = Maths;
+            Tabs.innerHTML =
+                "<img src='Resources/UnIntgrBtn.jpg' onmouseover='Over()' onmouseout='Out()' onclick=''> \
+                <img src='Resources/GSummBtn.jpg' onmouseover='Over()' onmouseout='Out()'> \
+                <img src='Resources/LimBtn.jpg' onmouseover='Over()' onclick='' onmouseout='Out()'> \
+                <img src='Resources/DfIntgrBtn.jpg' onmouseover='Over()' onmouseout='Out()'> \
+                <img src='Resources/SubstBtn.jpg' onmouseover='Over()' onmouseout='Out()'> \
+                <img src='Resources/GMultBtn.jpg' onmouseover='Over()' onmouseout='Out()'> \
+                <img src='Resources/AbsBtn.jpg' onmouseover='Over()' onmouseout='Out()'> \
+                <img src='Resources/DerivBtn.jpg' onmouseover='Over()' onmouseout='Out()' onclick=''> \                      <img src='Resources/MatrBtn.jpg' onmouseover='Over()' onmouseout='Out()' onclick=''> \
+                <img src='Resources/SystBtn.jpg' onmouseover='Over()' onmouseout='Out()' onclick=''> \
+                <img src='Resources/bbBinomCoef.jpg' onmouseover='Over()' onmouseout='Out()'> \
+                <img src='Resources/bbPerCount.jpg' onmouseover='Over()' onmouseout='Out()'> \
+                <img src='Resources/bbPlcmCoef.jpg' onmouseover='Over()' onmouseout='Out()'> \
+                <img src='Resources/bbImUnit.jpg' onmouseover='Over()' onmouseout='Out()'> \
+                <img src='Resources/MeasBtn.jpg' onmouseover='Over()' onmouseout='Out()'> \
+                <img src='Resources/VectBtn.jpg' onmouseover='Over()' onmouseout='Out()'>"
+        }
+
+        function AlgebraTab() {
+            Algebra.style.background = "#eeeeee";
+            Algebra.style.cursor = "default";
+            PrevTab.style.background = "";
+            PrevTab.style.cursor = "pointer";
+            PrevTab = Algebra;
+            Tabs.innerHTML =
+                "<img src='Resources/AlgTab/FracBtnGr.jpg' onmouseover='Over()' onmouseout='Out()' onclick=''> \
+                <img src='Resources/AlgTab/btnPowerNusha1.png' onmouseover='Over()' onmouseout='Out()'> \
+                <img src='Resources/AlgTab/btnSqrtNuscha1.jpg' onmouseover='Over()' onclick='' onmouseout='Out()'> \
+                <img src='Resources/AlgTab/RootBtn.jpg' onmouseover='Over()' onmouseout='Out()'> \
+                <img src='Resources/AlgTab/SystBtn.jpg' onmouseover='Over()' onmouseout='Out()'> \
+                <img src='Resources/AlgTab/IndexBtn.jpg' onmouseover='Over()' onmouseout='Out()'> \
+                <img src='Resources/AlgTab/LowRegBtn.jpg' onmouseover='Over()' onmouseout='Out()'> \
+                <img src='Resources/AlgTab/NewLineBtnA.jpg' onmouseover='Over()' onmouseout='Out()' onclick=''> \                   <img src='Resources/AlgTab/HiRegBtn.jpg' onmouseover='Over()' onmouseout='Out()' onclick=''> \                      <img src='Resources/AlgTab/BitBtnLog.jpg' onmouseover='Over()' onmouseout='Out()' onclick=''> \
+                <img src='Resources/AlgTab/btnFunc.jpg' onmouseover='Over()' onmouseout='Out()' onclick=''>"
+        }
+
+        function GrecianTab() {
+            Grecian.style.background = "#eeeeee";
+            Grecian.style.cursor = "default";
+            PrevTab.style.background = "";
+            PrevTab.style.cursor = "pointer";
+            PrevTab = Grecian;
+            Tabs.innerHTML =
+                "<img src='Resources/AlphaBtn.jpg' onmouseover='Over()' onmouseout='Out()' onclick=''> \
+                <img src='Resources/PiBtn.jpg' onmouseover='Over()' onmouseout='Out()'> \
+                <img src='Resources/BettaBtn.jpg' onmouseover='Over()' onclick='' onmouseout='Out()'> \
+                <img src='Resources/RoBtn.jpg' onmouseover='Over()' onmouseout='Out()'> \
+                <img src='Resources/GammaBtn.jpg' onmouseover='Over()' onmouseout='Out()'> \
+                <img src='Resources/PsiomegaBtn.jpg' onmouseover='Over()' onmouseout='Out()'> \
+                <img src='Resources/DeltaBtn.jpg' onmouseover='Over()' onmouseout='Out()'> \
+                <img src='Resources/OmegaBtn.jpg' onmouseover='Over()' onmouseout='Out()' onclick=''> \                      <img src='Resources/FiBtn.jpg' onmouseover='Over()' onmouseout='Out()' onclick=''> \
+                <img src='Resources/PsiBtn.jpg' onmouseover='Over()' onmouseout='Out()' onclick=''> \
+                <img src='Resources/EpsilonBtn.jpg' onmouseover='Over()' onmouseout='Out()'> \
+                <img src='Resources/DegreesBtn.jpg' onmouseover='Over()' onmouseout='Out()'> \
+                <img src='Resources/EttaBtn.jpg' onmouseover='Over()' onmouseout='Out()'> \
+                <img src='Resources/MinuteBtn.jpg' onmouseover='Over()' onmouseout='Out()'>"
+        }
+
+        function SymbolsTab() {
+            Symbols.style.background = "#eeeeee";
+            Symbols.style.cursor = "default";
+            PrevTab.style.background = "";
+            PrevTab.style.cursor = "pointer";
+            PrevTab = Symbols;
+            Tabs.innerHTML =
+                "<img src='Resources/BirdBtn.jpg' onmouseover='Over()' onmouseout='Out()' onclick=''> \
+                <img src='Resources/MaxEqualBtn.jpg' onmouseover='Over()' onmouseout='Out()'> \
+                <img src='Resources/MinEqualBtn.jpg' onmouseover='Over()' onclick='' onmouseout='Out()'> \
+                <img src='Resources/TriangleBtn.jpg' onmouseover='Over()' onmouseout='Out()'> \
+                <img src='Resources/RoundBtn.jpg' onmouseover='Over()' onmouseout='Out()'> \
+                <img src='Resources/BitBtn23.jpg' onmouseover='Over()' onmouseout='Out()'> \
+                <img src='Resources/AroundBtn.jpg' onmouseover='Over()' onmouseout='Out()'> \
+                <img src='Resources/PlusMinusBtn.jpg' onmouseover='Over()' onmouseout='Out()' onclick=''> \                                <img src='Resources/MinusPlusBtn.jpg' onmouseover='Over()' onmouseout='Out()' onclick=''> \
+                <img src='Resources/ParallelBtn.jpg' onmouseover='Over()' onmouseout='Out()' onclick=''> \
+                <img src='Resources/CrossBtn.jpg' onmouseover='Over()' onmouseout='Out()'> \
+                <img src='Resources/PointsBtn.jpg' onmouseover='Over()' onmouseout='Out()'> \
+                <img src='Resources/AdditionBtn.jpg' onmouseover='Over()' onmouseout='Out()'> \
+                <img src='Resources/BitBtn19.jpg' onmouseover='Over()' onmouseout='Out()'>"
+        }
+
+        function Over() {
+            window.event.srcElement.style.padding = "0px";
+            window.event.srcElement.style.borderStyle = "solid";
+        }
+
+        function Out() {
+            window.event.srcElement.style.padding = "5px";
+            window.event.srcElement.style.borderStyle = "none";
+        }
+
+        function PlusBtnClick() {
+            var Uact;
+            Uact = msPlus;
+            Uact.act = TEdAction.actPrintable;
+            XPGEdit.Editor(new U_A_T(Uact));
+        }
+
+        function MinusBtnClick() {
+            var Uact;
+            Uact = msMinus;
+            Uact.act = TEdAction.actPrintable;
+            XPGEdit.Editor(new U_A_T(Uact));
+        }
+
+        function MultBtnClick() {
+            var Uact;
+            Uact = msMult;
+            Uact.act = TEdAction.actPrintable;
+            XPGEdit.Editor(new U_A_T(Uact));
+        }
+
+        function Mult2BtnClick() {
+            var Uact;
+            Uact = msMult2;
+            Uact.act = TEdAction.actPrintable;
+            XPGEdit.Editor(new U_A_T(Uact));
+        }
+
+        function DiviBtnClick() {
+            var Uact;
+            Uact = msDivi;
+            Uact.act = TEdAction.actPrintable;
+            XPGEdit.Editor(new U_A_T(Uact));
+        }
+
+        function PowrBtnClick() {
+            XPGEdit.Editor(new U_A_T("POWER"));
+        }
+
+        function RootBtnClick() {
+            XPGEdit.Editor(new U_A_T("ROOT"));
+        }
+
+        function SqRootBtnClick() {
+            XPGEdit.Editor(new U_A_T("SQROOT"));
+        }
+
+        function FractionBtnClick() {
+            XPGEdit.Editor(new U_A_T("FRACTION"));
+        }
+
+        function LgBtnClick() {
+            XPGEdit.Editor(new U_A_T("LG"));
+        }
+
+        function LnBtnClick() {
+            XPGEdit.Editor(new U_A_T("LN"));
+        }
+
+        function ExpBtnClick() {
+            XPGEdit.Editor(new U_A_T("EXP"));
+        }
+
+        function SinBtnClick() {
+            XPGEdit.Editor(new U_A_T("SIN"));
+        }
+
+        function CosBtnClick() {
+            XPGEdit.Editor(new U_A_T("COS"));
+        }
+
+        function TanBtnClick() {
+            XPGEdit.Editor(new U_A_T("TAN"));
+        }
+
+        function CotBtnClick() {
+            XPGEdit.Editor(new U_A_T("COT"));
+        }
+
+        function ArcSinBtnClick() {
+            XPGEdit.Editor(new U_A_T("ARCSIN"));
+        }
+
+        function ArcCosBtnClick() {
+            XPGEdit.Editor(new U_A_T("ARCCOS"));
+        }
+
+        function ArcTanBtnClick() {
+            XPGEdit.Editor(new U_A_T("ARCTAN"));
+        }
+
+        function ArcCotBtnClick() {
+            XPGEdit.Editor(new U_A_T("ARCCOT"));
+        }
+    </script>
+</head>
+
+<body style="text-align:center" onload="Initiate()" onkeydown="XPGEdit.keyDownEvent()" onkeypress="XPGEdit.EdKeyPress()">
+    <div style="width:960px;margin:15px auto;text-align:left;">
+        <header style="background:#dceff5;border:1px solid #999999;padding:20px">
+            <img src="logo-halomda.png" style="float:left" />
+            <h1 style="text-align:center">HALOMDA EDUCATIONAL SOFTWARE</h1>
+            <br />
+            <h1 style="text-align:center">Mathematical formula editor</h1>
+            <br />
+        </header>
+        <nav style="clear:left;background:#CCCCCC;padding:5px 15px">
+            <ul style="text-align:center">
+                <li id="Main" onclick="MainTab()">Main</li>
+                <li id="Functions" onclick="FuncTab()">Functions</li>
+                <li id="Maths" onclick="MathTab()">Maths</li>
+                <li id="Algebra" onclick="AlgebraTab()">Algebra</li>
+                <li id="Grecian" onclick="GrecianTab()">Grecian</li>
+                <li id="Symbols" onclick="SymbolsTab()">Symbols</li>
+            </ul>
+        </nav>
+        <section style="float:left;width:735px;">
+            <canvas id="BaseCanvas" width="735" height="300" style="border:1px dotted" onclick="XPGEdit.mousePressEvent()"></canvas>
+        </section>
+        <aside style="float:left;width:185px;height:265px;padding:20px;background:#CCCCCC">
+            <div id="Tabs"></div>
+        </aside>
+        <footer style="clear:both;text-align:center;padding:20px;border-top:2px solid #999999"> </footer>
+    </div>
+</body>
+
+</html>
