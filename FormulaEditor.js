@@ -97,68 +97,68 @@ var msEmptySign = '\u2317';
 
 function charToTex(Ch) {
     switch (Ch) {
-    case msAlpha:
-        return "\\alpha";
-    case msBetta:
-        return "\\beta";
-    case msGamma:
-        return "\\gamma";
-    case msDelta:
-        return "\\delta";
-    case msFi:
-        return "\\phi";
-    case msEpsilon:
-        return "\\epsilon";
-    case msEta:
-        return "\\etha";
-    case msTeta:
-        return "\\theta";
-    case msRo:
-        return "\\rho";
-    case msOmega:
-        return "\\omega";
-    case msBigOmega:
-        return "\\Omega";
-    case msPsi:
-        return "\\psi";
-    case msPi:
-        return "\\pi";
-    case msDegree:
-        return "\\deg";
-    case msMinute:
-        return "\\min";
-    case msImUnit:
-        return "\\Im";
-    case msRound:
-        return "\\round";
-    case msAround:
-        return "\\around";
-    case msMinequal:
-        return "\\leq";
-    case msMaxequal:
-        return "\\geq";
-    case msInfinity:
-        return "\\infty";
-    case msParallel:
-        return "\\parallel";
-    case msCross:
-        return "\\perp";
-    case msAddition:
-        return "\\in";
-    case msNotequal:
-        return "\\neq";
-    case msPlusMinus:
-        return "\\pm";
-    case msMinusPlus:
-        return "\\mp";
-    case ms3Points:
-        return "\\ldots";
-    case msTriangle:
-        return "\\triangle";
-    case msBird:
-        return "\\bird";
-    default:
-        return Ch
+        case msAlpha:
+            return "\\alpha";
+        case msBetta:
+            return "\\beta";
+        case msGamma:
+            return "\\gamma";
+        case msDelta:
+            return "\\delta";
+        case msFi:
+            return "\\phi";
+        case msEpsilon:
+            return "\\epsilon";
+        case msEta:
+            return "\\etha";
+        case msTeta:
+            return "\\theta";
+        case msRo:
+            return "\\rho";
+        case msOmega:
+            return "\\omega";
+        case msBigOmega:
+            return "\\Omega";
+        case msPsi:
+            return "\\psi";
+        case msPi:
+            return "\\pi";
+        case msDegree:
+            return "\\deg";
+        case msMinute:
+            return "\\min";
+        case msImUnit:
+            return "\\Im";
+        case msRound:
+            return "\\round";
+        case msAround:
+            return "\\around";
+        case msMinequal:
+            return "\\leq";
+        case msMaxequal:
+            return "\\geq";
+        case msInfinity:
+            return "\\infty";
+        case msParallel:
+            return "\\parallel";
+        case msCross:
+            return "\\perp";
+        case msAddition:
+            return "\\in";
+        case msNotequal:
+            return "\\neq";
+        case msPlusMinus:
+            return "\\pm";
+        case msMinusPlus:
+            return "\\mp";
+        case ms3Points:
+            return "\\ldots";
+        case msTriangle:
+            return "\\triangle";
+        case msBird:
+            return "\\bird";
+        default:
+            return Ch
     }
 }
 
@@ -598,15 +598,15 @@ TEdAction = {
 function U_A_T(Parm) {
     this.Parms = Parm;
     switch (typeof Parm) {
-    case 'string':
-        if (Parm.length == 1 || Parm == msCConjugation)
-            this.act = TEdAction.actPrintable;
-        else
-            this.act = TEdAction.actCtrlKey;
-        return;
-    case 'object':
-        this.act = TEdAction.actMouseButton;
-        return;
+        case 'string':
+            if (Parm.length == 1 || Parm == msCConjugation)
+                this.act = TEdAction.actPrintable;
+            else
+                this.act = TEdAction.actCtrlKey;
+            return;
+        case 'object':
+            this.act = TEdAction.actMouseButton;
+            return;
     }
     this.act = TEdAction.actNone;
 }
@@ -1638,7 +1638,8 @@ EdList.prototype.MoveLeft = function (pL) {
         } else {
             if (!pL.pSub_L.pLast.pMember.MoveInLeft(pL))
                 pL.pSub_L.pCurr = pL.pSub_L.pLast;
-        } else
+        }
+    else
     if (pL.pSub_L.pCurr.pPrev === null) {
         if (pL.pSub_L.pMother !== null)
             if (!pL.pSub_L.pMother.pMember.MoveToPrev(pL)) {
@@ -2523,7 +2524,7 @@ EdFrac.prototype.SetCurrent = function (C, pSL, pCr) {
             pCr.p = null;
         } else {
             pSL.p = this.pBB;
-        } // { element not found - set position on the } of power basic }
+        } 
         return true;
     }
 }
@@ -2635,14 +2636,14 @@ function EdLg(pOwn, Str) {
     this.pNN = new EdList(this.pOwner);
     this.pB1 = new EdList(this.pOwner);
     this.pB2 = new EdList(this.pOwner);
-    
+
     for (var i = 0; i < Str.length; i++) {
         this.pNN.Append_Before(new EdChar(Str[i], this.pOwner))
     }
-    
-    this.pB1.Append_Before(new EdChar ('(', this.pOwner));
-    this.pB2.Append_Before(new EdChar (')', this.pOwner));
-    
+
+    this.pB1.Append_Before(new EdChar('(', this.pOwner));
+    this.pB2.Append_Before(new EdChar(')', this.pOwner));
+
     this.Type = 'EdLg';
 }
 
@@ -2784,6 +2785,16 @@ EdLg.prototype.MoveToNext = function (pL) {
     }
 }
 
+EdLg.prototype.MoveToPrev = function (pL) {
+    if (pL == this.pAA) {
+        pL = this.pNN;
+        pL.pCurr = this.pNN.pLast;
+        return true;
+    } else {
+        return false;
+    }
+}
+
 EdLg.prototype.SWrite = function () {
     return "\\" + this.pNN.SWrite() + '{' + this.pAA.SWrite() + '}';
 }
@@ -2832,29 +2843,29 @@ var XPGEdit = {
     keyDownEvent: function () {
         var Uact;
         switch (event.keyCode) {
-        case 37:
-            Uact = new U_A_T("vk_Left");
-            break;
-        case 38:
-            Uact = new U_A_T("vk_Up");
-            break;
-        case 39:
-            Uact = new U_A_T("vk_Right");
-            break;
-        case 40:
-            Uact = new U_A_T("vk_Down");
-            break;
-        case 46:
-            Uact = new U_A_T("vk_Delete");
-            break;
-        case 8:
-            Uact = new U_A_T("vk_Back");
-            break;
-        case 13:
-            Uact = new U_A_T(msCharNewLine);
-            break;
-        default:
-            return false;
+            case 37:
+                Uact = new U_A_T("vk_Left");
+                break;
+            case 38:
+                Uact = new U_A_T("vk_Up");
+                break;
+            case 39:
+                Uact = new U_A_T("vk_Right");
+                break;
+            case 40:
+                Uact = new U_A_T("vk_Down");
+                break;
+            case 46:
+                Uact = new U_A_T("vk_Delete");
+                break;
+            case 8:
+                Uact = new U_A_T("vk_Back");
+                break;
+            case 13:
+                Uact = new U_A_T(msCharNewLine);
+                break;
+            default:
+                return false;
         }
         this.Editor(Uact);
         TXPGrEl.EditKeyPress = false;
@@ -2916,19 +2927,19 @@ var XPGEdit = {
 
     Editor: function (Uact) {
         switch (this.pInEdit.EditAction(Uact)) {
-        case EdAction.edCursor:
-            this.MoveCursor();
-            return;
-        case EdAction.edRefresh:
-            this.IsCopy = false;
-            this.pInEdit.ClearSelection();
-            this.RefreshXPE();
-            return;
-        case EdAction.edBeep:
-            alert("Bad key was pressed");
-            return;
-        case EdAction.edInvalid:
-            alert("Internal Error; Impossible to start new line!");
+            case EdAction.edCursor:
+                this.MoveCursor();
+                return;
+            case EdAction.edRefresh:
+                this.IsCopy = false;
+                this.pInEdit.ClearSelection();
+                this.RefreshXPE();
+                return;
+            case EdAction.edBeep:
+                alert("Bad key was pressed");
+                return;
+            case EdAction.edInvalid:
+                alert("Internal Error; Impossible to start new line!");
         }
     },
 
