@@ -2575,29 +2575,29 @@ EdFrac.prototype.Draw = function (P) {
 
 EdFrac.prototype.MoveInRight = function (pL) {
     if (this.pAA.Start.X <= this.pBB.Start.X) {
-        pL = this.pAA;
-        pL.pCurr = this.pAA.pFirst;
+        pL.pSub_L = this.pAA;
+        pL.pSub_L.pCurr = this.pAA.pFirst;
     } else {
-        pL = this.pBB;
-        pL.pCurr = this.pBB.pFirst;
+        pL.pSub_L = this.pBB;
+        pL.pSub_L.pCurr = this.pBB.pFirst;
     }
     return true;
 }
 
 EdFrac.prototype.MoveInLeft = function (pL) {
     if (this.pAA.Start.X <= this.pBB.Start.X) {
-        pL = this.pAA;
+        pL.pSub_L = this.pAA;
     } else {
-        pL = this.pBB;
+        pL.pSub_L = this.pBB;
     }
-    pL.pCurr = null;
+    pL.pSub_L.pCurr = null;
     return true;
 }
 
 EdFrac.prototype.MoveToUp = function (pL) {
     if (pL.pSub_L = this.pBB) {
-        pL = this.pAA;
-        pL.pCurr = this.pAA.pFirst;
+        pL.pSub_L = this.pAA;
+        pL.pSub_L.pCurr = this.pAA.pFirst;
         return true;
     } else {
         return false;
@@ -2606,8 +2606,8 @@ EdFrac.prototype.MoveToUp = function (pL) {
 
 EdFrac.prototype.MoveToDown = function (pL) {
     if (pL.pSub_L = this.pAA) {
-        pL = this.pBB;
-        pL.pCurr = this.pBB.pFirst;
+        pL.pSub_L = this.pBB;
+        pL.pSub_L.pCurr = this.pBB.pFirst;
         return true;
     } else {
         return false;
