@@ -2372,7 +2372,7 @@ EdRoot.prototype.MoveInRight = function (pL) {
 
 EdRoot.prototype.MoveInLeft = function (pL) {
     pL.pSub_L = this.pAA;
-    pL.pSub_LpCurr = null;
+    pL.pSub_L.pCurr = null;
     return true;
 }
 
@@ -2469,7 +2469,7 @@ EdSqRoot.prototype.MoveInRight = function (pL) {
 
 EdSqRoot.prototype.MoveInLeft = function (pL) {
     pL.pSub_L = this.pAA;
-    pL.pSub_LpCurr = null;
+    pL.pSub_L.pCurr = null;
     return true;
 }
 
@@ -2510,23 +2510,44 @@ EdFrac.prototype.SetCurrent = function (C, pSL, pCr) {
     this.pAA.pCurr = pCurr.p;
     if (Result) {
         pCr.p = pCurr.p;
-    }
-    if (this.pAA.pFirst === null && this.pAA.Start.X <= C.X && this.pAA.Start.X + this.pAA.Size.width >= C.X && this.pAA.Start.Y <= C.Y &&
-        this.pAA.Start.Y + this.pAA.Size.height >= C.Y) {
-        pCr.p = null;
     } else {
-        pSL.p = this.pBB;
-        pCurr.p = this.pBB.pCurr;
-        Result = pSL.p.SetCurrent(C, pSL, pCurr);
-        this.pBB.pCurr = pCurr.p;
-        if (this.pBB.pFirst === null && this.pBB.Start.X <= C.X && this.pBB.Start.X + this.pBB.Size.width >= C.X && this.pBB.Start.Y <= C.Y &&
-            this.pBB.Start.Y + this.pBB.Size.height >= C.Y) {
+        if ((this.pAA.pFirst == null) &&
+            (this.pAA.Start.X <= C.X) &&
+            (this.pAA.Start.X + this.pAA.Size.width >= C.X) &&
+            (this.pAA.Start.Y <= C.Y) &&
+            (this.pAA.Start.Y + this.pAA.Size.height >= C.Y)) {
             pCr.p = null;
         } else {
             pSL.p = this.pBB;
-        } 
+            if ((this.pBB.pFirst == null) &&
+                (this.pBB.Start.X <= C.X) &&
+                (this.pBB.Start.X + this.pBB.Size.width >= C.X) &&
+                (this.pBB.Start.Y <= C.Y) &&
+                (this.pBB.Start.Y + this.pBB.Size.height >= C.Y)) {
+                pCr.p = null;
+            } else {
+                pSL.p = this.pBB;
+            }
+        }
         return true;
     }
+
+    // if (this.pAA.pFirst === null && this.pAA.Start.X <= C.X && this.pAA.Start.X + this.pAA.Size.width >= C.X && this.pAA.Start.Y <= C.Y &&
+    //     this.pAA.Start.Y + this.pAA.Size.height >= C.Y) {
+    //     pCr.p = null;
+    // } else {
+    //     pSL.p = this.pBB;
+    //     pCurr.p = this.pBB.pCurr;
+    //     Result = pSL.p.SetCurrent(C, pSL, pCurr);
+    //     this.pBB.pCurr = pCurr.p;
+    //     if (this.pBB.pFirst === null && this.pBB.Start.X <= C.X && this.pBB.Start.X + this.pBB.Size.width >= C.X && this.pBB.Start.Y <= C.Y &&
+    //         this.pBB.Start.Y + this.pBB.Size.height >= C.Y) {
+    //         pCr.p = null;
+    //     } else {
+    //         pSL.p = this.pBB;
+    //     } 
+    //     return true;
+    // }
 }
 
 EdFrac.prototype.PreCalc = function (P, S, A) {
@@ -2616,8 +2637,8 @@ EdFrac.prototype.MoveToDown = function (pL) {
 
 EdFrac.prototype.SWrite = function () {
     var NOMstr, DENstr;
-    NOMstr = this.m_pAA.SWrite();
-    DENstr = this.m_pBB.SWrite();
+    NOMstr = this.pAA.SWrite();
+    DENstr = this.pBB.SWrite();
     return "\\frac{" + NOMstr + "}{" + DENstr + "}";
 }
 
@@ -2632,7 +2653,8 @@ EdFrac.prototype.Write = function () {
 }
 
 function EdLg(pOwn, Str) {
-    EdTwo.call(this, pOwn);
+    EdElm.call(this, pOwn);
+    this.pAA = new EdList(this.pOwner);
     this.pNN = new EdList(this.pOwner);
     this.pB1 = new EdList(this.pOwner);
     this.pB2 = new EdList(this.pOwner);
@@ -2651,27 +2673,31 @@ EdLg.prototype = Object.create(EdTwo.prototype);
 
 EdLg.prototype.SetCurrent = function (C, pSL, pCr) {
     pSL.p = this.pNN;
-
-    if (pSL.p.SetCurrent(C, pSL, pSL.pCurr)) {
-        pCr = null;
+    var pCurr = {
+        p: this.pAA.pCurr
+    };
+    var Result = pSL.p.SetCurrent(C, pSL, pCurr);
+    this.pAA.pCurr = pCurr.p;
+    if (Result) {
+        pCr.p = null;
     } else if ((this.pNN.pFirst == null) &&
         (this.pNN.Start.X <= C.X) &&
         (this.pNN.Start.X + this.pNN.Size.width() >= C.X) &&
         (this.pNN.Start.Y <= C.Y) &&
         (this.pNN.Start.Y + this.pNN.Size.height() >= C.Y)) {
-        pCr = null;
+        pCr.p = null;
     } else {
-        pSL = this.pAA;
-        if (pSL.SetCurrent(C, pSL, pSL.pCurr)) {
-            pCr = null;
+        pSL.p = this.pAA;
+        if (pSL.p.SetCurrent(C, pSL, pCurr)) {
+            pCr.p = null;
         } else if ((this.pAA.pFirst == null) &&
             (this.pAA.Start.X <= C.X) &&
             (this.pAA.Start.X + this.pAA.Size.width >= C.X) &&
             (this.pAA.Start.Y <= C.Y) &&
             (this.pAA.Start.Y + this.pAA.Size.height >= C.Y)) {
-            pCr = null;
+            pCr.p = null;
         } else {
-            pSL = this.pAA;
+            pSL.p = this.pAA;
         }
     }
     return true;
@@ -2764,21 +2790,21 @@ EdLg.prototype.Write = function () {
 }
 
 EdLg.prototype.MoveInRight = function (pL) {
-    pL = this.pAA;
-    pL.pCurr = this.pAA.pFirst;
+    pL.pSub_L = this.pAA;
+    pL.pSub_L.pCurr = this.pAA.pFirst;
     return true;
 }
 
 EdLg.prototype.MoveInLeft = function (pL) {
-    pL = this.pAA;
-    pL.pCurr = null;
+    pL.pSub_L = this.pAA;
+    pL.pSub_L.pCurr = null;
     return true;
 }
 
 EdLg.prototype.MoveToNext = function (pL) {
-    if (pL == this.pNN) {
-        pL = this.pAA;
-        pL.pCurr = this.pAA.pFirst;
+    if (pL.pSub_L === this.pNN) {
+        pL.pSub_L = this.pAA;
+        pL.pSub_L.pCurr = this.pAA.pFirst;
         return true;
     } else {
         return false;
@@ -2786,9 +2812,9 @@ EdLg.prototype.MoveToNext = function (pL) {
 }
 
 EdLg.prototype.MoveToPrev = function (pL) {
-    if (pL == this.pAA) {
-        pL = this.pNN;
-        pL.pCurr = this.pNN.pLast;
+    if (pL.pSub_L === this.pAA) {
+        pL.pSub_L = this.pNN;
+        pL.pSub_L.pCurr = this.pNN.pLast;
         return true;
     } else {
         return false;
