@@ -2446,8 +2446,6 @@ EdSqRoot.prototype.Draw = function (P) {
     this.pAA.Draw(this.pAA.Start);
     var pOldElement = this.pOwner.pPaintedElement;
     this.pOwner.pPaintedElement = this;
-    //    var Pen = this.pOwner.pCanvas.pen();
-    //    this.pOwner.pCanvas.setPen(Pen);
     this.pOwner.Line(this.pAA.Start.X - 1, this.pAA.Start.Y - 2, this.pAA.Start.X + this.pAA.Size.width + 1, this.pAA.Start.Y - 2);
     this.pOwner.Line(this.pAA.Start.X - 1, this.pAA.Start.Y - 1, this.pBB.Start.X + 4, this.pAA.Start.Y + this.pAA.Size.height); //???
     this.pOwner.Line(this.pBB.Start.X, this.pBB.Start.Y + 2 + this.pBB.Size.height, this.pBB.Start.X + 3, this.pBB.Start.Y + 2 + this.pBB.Size.height);
@@ -2669,7 +2667,7 @@ function EdLg(pOwn, Str) {
     this.Type = 'EdLg';
 }
 
-EdLg.prototype = Object.create(EdTwo.prototype);
+EdLg.prototype = Object.create(EdElm.prototype);
 
 EdLg.prototype.SetCurrent = function (C, pSL, pCr) {
     pSL.p = this.pNN;
@@ -2823,6 +2821,199 @@ EdLg.prototype.MoveToPrev = function (pL) {
 
 EdLg.prototype.SWrite = function () {
     return "\\" + this.pNN.SWrite() + '{' + this.pAA.SWrite() + '}';
+}
+
+function EdSubst(pOwn, Str) {
+    EdElm.call(this, pOwn);
+    this.PS = new TPoint(0, 0);
+    this.SS = new QSize(0, 0);
+    this.pAA = new EdList(this.pOwner);
+    this.pLL = new EdList(this.pOwner);
+    this.pHL = new EdList(this.pOwner);
+
+    this.Type = 'EdSubst';
+}
+
+EdSubst.prototype = Object.create(EdElm.prototype);
+
+EdSubst.prototype.SetCurrent = function (C, pSL, pCr) {
+    pSL.p = this.pNN;
+    var pCurr = {
+        p: this.pAA.pCurr
+    };
+    var Result = pSL.p.SetCurrent(C, pSL, pCurr);
+    this.pAA.pCurr = pCurr.p;
+    if (Result) {
+        pCr.p = null;
+    } else if ((this.pNN.pFirst == null) &&
+        (this.pNN.Start.X <= C.X) &&
+        (this.pNN.Start.X + this.pNN.Size.width() >= C.X) &&
+        (this.pNN.Start.Y <= C.Y) &&
+        (this.pNN.Start.Y + this.pNN.Size.height() >= C.Y)) {
+        pCr.p = null;
+    } else {
+        pSL.p = this.pAA;
+        if (pSL.p.SetCurrent(C, pSL, pCurr)) {
+            pCr.p = null;
+        } else if ((this.pAA.pFirst == null) &&
+            (this.pAA.Start.X <= C.X) &&
+            (this.pAA.Start.X + this.pAA.Size.width >= C.X) &&
+            (this.pAA.Start.Y <= C.Y) &&
+            (this.pAA.Start.Y + this.pAA.Size.height >= C.Y)) {
+            pCr.p = null;
+        } else {
+            pSL.p = this.pAA;
+        }
+    }
+    return true;
+}
+
+EdSubst.prototype.PreCalc = function (P, S, A) {
+    this.Start = P.Clone();
+    var P1 = new TPoint(0, 0),
+        PL = new TPoint(0, 0),
+        PH = new TPoint(0, 0),
+        S1 = new QSize(0, 0),
+        SL = new QSize(0, 0),
+        SH = new QSize(0, 0),
+        dY = 0,
+        BaseLevel = this.pOwner.DrawingPower == 0;
+
+    this.Start = P;
+
+    P1.X = this.Start.X;
+    P1.Y = this.Start.Y + 2; //space in top
+    this.pAA.PreCalc(P1, S1, this.pAA.Axis);
+
+    this.PS.X = P1.X + S1.width + 3; // space after expression
+    this.PS.Y = this.Start.Y;
+    this.SS.width = 1;
+    this.SS.height = S1.height + 4; //space in top & bottom
+
+    PH.X = this.PS.X + 3;
+    PH.Y = this.Start.Y;
+    this.pOwner.SetPowerSize(+1, BaseLevel);
+    this.pHL.PreCalc(PH, SH, this.pHL.Axis);
+
+    PL.X = PH.X;
+    PL.Y = PH.Y + SH.height + 2;
+    this.pOwner.SetPowerSize(-2, BaseLevel);
+    this.pLL.PreCalc(PL, SL, this.pLL.Axis);
+    this.pOwner.SetPowerSize(+1, BaseLevel);
+
+    dY = (PL.Y + SL.height) - (this.PS.Y + this.SS.height);
+
+    if (dY < 0) {
+        PL.Y -= dY;
+        this.pOwner.SetPowerSize(-1, BaseLevel);
+        this.pLL.PreCalc(PL, SL, this.pLL.Axis);
+        this.pOwner.SetPowerSize(+1, BaseLevel);
+    }
+
+    if (dY > 0) {
+        this.SS.height = this.SS.height + dY;
+        P1.Y += Math.round(dY / 2);
+        this.pAA.PreCalc(P1, S1, this.pAA.Axis);
+    }
+
+    this.Size.width = Math.max(PH.X + SH.width, PL.X + SL.width);
+    this.Size.width = this.Size.width - this.Start.X;
+    this.Size.width = this.Size.width + 4; // space after Subst
+    this.Size.height = PL.Y + SL.height - this.Start.Y;
+    this.Axis = P1.Y - this.Start.Y + this.pAA.Axis;
+    S = this.Size;
+    A = this.Axis;
+}
+
+EdSubst.prototype.Draw = function (P) {
+    var BaseLevel = this.pOwner.DrawingPower == 0,
+        pOldElement = this.pOwner.pPaintedElement;
+    this.pOwner.pPaintedElement = this;
+    if ((this.Start.X != P.X) || (this.Start.Y != P.Y)) {
+        this.Start = P;
+        this.PreCalc(this.Start, this.Size, this.Axis);
+    }
+    this.pAA.Draw(this.pAA.Start);
+    this.pOwner.Line(this.PS.X, this.PS.Y, this.PS.X, this.PS.Y + this.SS.height);
+    this.pOwner.SetPowerSize(+1, BaseLevel);
+    this.pHL.Draw(this.pHL.Start);
+    this.pOwner.SetPowerSize(-2, BaseLevel);
+    this.pLL.Draw(this.pLL.Start);
+    this.pOwner.SetPowerSize(+1, BaseLevel);
+    this.pOwner.pPaintedElement = pOldElement;
+}
+
+EdSubst.prototype.Write = function () {
+    return '((' + this.pAA.Write() + ',' + this.pLL.Write() + ',' + this.pHL.Write() + "))";
+    // return '(' + SubstName + '(' + this.pAA.Write() + ',' + this.pLL.Write() + ',' + this.pHL.Write() + "))";
+}
+
+EdSubst.prototype.MoveInRight = function (pL) {
+    pL.pSub_L = this.pAA;
+    pL.pSub_L.pCurr = this.pAA.pFirst;
+    return true;
+}
+
+EdSubst.prototype.MoveInLeft = function (pL) {
+    pL.pSub_L = this.pHL;
+    pL.pSub_L.pCurr = null;
+    return true;
+}
+
+EdSubst.prototype.MoveToNext = function (pL) {
+    if (pL.pSub_L === this.pAA) {
+        pL.pSub_L = this.pHL;
+        pL.pSub_L.pCurr = this.pHL.pFirst;
+        return true;
+    } else {
+        return false;
+    }
+}
+
+EdSubst.prototype.MoveToPrev = function (pL) {
+    if ((pL.pSub_L === this.pLL) || (pL.pSub_L === this.pHL)) {
+        pL.pSub_L = this.pAA;
+        pL.pSub_L.pCurr = null;
+        return true;
+    } else {
+        return false;
+    }
+}
+
+EdSubst.prototype.MoveToUp = function (pL) {
+    if (pL.pSub_L === this.pLL) {
+        pL.pSub_L = this.pAA;
+        pL.pCurr = null;
+        return true;
+    } else {
+        if (pL.pSub_L == this.pAA) {
+            pL.pSub_L = this.pHL;
+            pL.pCurr = this.pHL.pFirst;
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
+EdSubst.prototype.MoveToDown = function (pL) {
+    if (pL.pSub_L === this.pHL) {
+        pL.pSub_L = this.pAA;
+        pL.pCurr = null;
+        return true;
+    } else {
+        if (pL.pSub_L == this.pAA) {
+            pL.pSub_L = this.pLL;
+            pL.pCurr = this.pLL.pFirst;
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
+EdSubst.prototype.SWrite = function () {
+    return "\\subst{" + this.pAA.SWrite() + "}{" + this.pLL.SWrite() + "}{" + this.pHL.SWrite() + '}';
 }
 
 var XPGEdit = {

@@ -9,7 +9,7 @@
             margin: 0px;
             padding: 0px;
         }
-        
+
         li {
             display: inline-block;
             list-style: none;
@@ -19,14 +19,14 @@
             border: 1px solid #999999;
             cursor: pointer;
         }
-        
+
         img {
             padding: 5px;
             cursor: pointer;
             border-color: red;
             border-width: 1px;
         }
-        
+
         #Tabs img {
             width: 47px;
         }
@@ -95,20 +95,84 @@
             PrevTab = Maths;
             Tabs.innerHTML =
                 "<img src='Resources/UnIntgrBtn.jpg' onmouseover='Over()' onmouseout='Out()' onclick=''> \
-                <img src='Resources/GSummBtn.jpg' onmouseover='Over()' onmouseout='Out()'> \
-                <img src='Resources/LimBtn.jpg' onmouseover='Over()' onclick='' onmouseout='Out()'> \
-                <img src='Resources/DfIntgrBtn.jpg' onmouseover='Over()' onmouseout='Out()'> \
-                <img src='Resources/SubstBtn.jpg' onmouseover='Over()' onmouseout='Out()'> \
-                <img src='Resources/GMultBtn.jpg' onmouseover='Over()' onmouseout='Out()'> \
-                <img src='Resources/AbsBtn.jpg' onmouseover='Over()' onmouseout='Out()'> \
+                <img src='Resources/GSummBtn.jpg' onmouseover='Over()' onmouseout='Out()' onclick=''> \
+                <img src='Resources/LimBtn.jpg' onmouseover='Over()' onmouseout='Out()' onclick=''> \
+                <img src='Resources/DfIntgrBtn.jpg' onmouseover='Over()' onmouseout='Out()' onclick=''> \
+                <img src='Resources/SubstBtn.jpg' onmouseover='Over()' onmouseout='Out()' onclick='SubstBtnClick()'> \
+                <img src='Resources/GMultBtn.jpg' onmouseover='Over()' onmouseout='Out()' onclick=''> \
+                <img src='Resources/AbsBtn.jpg' onmouseover='Over()' onmouseout='Out()' onclick=''> \
                 <img src='Resources/DerivBtn.jpg' onmouseover='Over()' onmouseout='Out()' onclick=''> \                      <img src='Resources/MatrBtn.jpg' onmouseover='Over()' onmouseout='Out()' onclick=''> \
                 <img src='Resources/SystBtn.jpg' onmouseover='Over()' onmouseout='Out()' onclick=''> \
-                <img src='Resources/bbBinomCoef.jpg' onmouseover='Over()' onmouseout='Out()'> \
-                <img src='Resources/bbPerCount.jpg' onmouseover='Over()' onmouseout='Out()'> \
-                <img src='Resources/bbPlcmCoef.jpg' onmouseover='Over()' onmouseout='Out()'> \
-                <img src='Resources/bbImUnit.jpg' onmouseover='Over()' onmouseout='Out()'> \
-                <img src='Resources/MeasBtn.jpg' onmouseover='Over()' onmouseout='Out()'> \
-                <img src='Resources/VectBtn.jpg' onmouseover='Over()' onmouseout='Out()'>"
+                <img src='Resources/bbBinomCoef.jpg' onmouseover='Over()' onmouseout='Out()' onclick=''> \
+                <img src='Resources/bbPerCount.jpg' onmouseover='Over()' onmouseout='Out()' onclick=''> \
+                <img src='Resources/bbPlcmCoef.jpg' onmouseover='Over()' onmouseout='Out()' onclick=''> \
+                <img src='Resources/bbImUnit.jpg' onmouseover='Over()' onmouseout='Out()' onclick=''> \
+                <img src='Resources/MeasBtn.jpg' onmouseover='Over()' onmouseout='Out()' onclick=''> \
+                <img src='Resources/VectBtn.jpg' onmouseover='Over()' onmouseout='Out()' onclick=''>"
+        }
+
+        function SubstBtnClick() {
+            XPGEdit.Editor(new U_A_T("SUBST"));
+        }
+
+        function GMultBtnClick() {
+            XPGEdit.Editor(new U_A_T("GMULT"));
+        }
+
+        function GSummBtnClick() {
+            XPGEdit.Editor(new U_A_T("GSUMMA"));
+        }
+
+        function DfIntegrBtnClick() {
+            XPGEdit.Editor(new U_A_T("DEFINTEGRAL"));
+        }
+
+        function AbsBtnClick() {
+            XPGEdit.Editor(new U_A_T("ABS"));
+        }
+
+        function VectorBtnClick() {
+            XPGEdit.Editor(new U_A_T("VECTOR"));
+        }
+
+        function IntegrBtnClick() {
+            XPGEdit.Editor(new U_A_T("INTEGRAL"));
+        }
+
+        function MatrBtnClick() {
+            XPGEdit.Editor(new U_A_T("MATRIX"));
+        }
+
+        function LimitBtnClick() {
+            XPGEdit.Editor(new U_A_T("LIMIT"));
+        }
+
+        function ImUnitBtnClick() {
+            XPGEdit.Editor(new U_A_T("IMUNIT"));
+        }
+
+        function DerivBtnClick() {
+            XPGEdit.Editor(new U_A_T("DERIVATIVE"));
+        }
+
+        function PerCountBtnClick() {
+            XPGEdit.Editor(new U_A_T("PerCount"));
+        }
+
+        function BinomCoeffBtnClick() {
+            XPGEdit.Editor(new U_A_T("BinomCoeff"));
+        }
+
+        function ABinomCoeffBtnClick() {
+            XPGEdit.Editor(new U_A_T("ABinomCoeff"));
+        }
+
+        function FuncBtnClick() {
+            XPGEdit.Editor(new U_A_T("MEASURED"));
+        }
+
+        function SystBtnClick() {
+            XPGEdit.Editor(new U_A_T("SYSTEM"));
         }
 
         function AlgebraTab() {
